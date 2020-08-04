@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "659831597132",
+    "firebase_url": "https://taxiserv-45c06.firebaseio.com",
+    "project_id": "taxiserv-45c06",
+    "storage_bucket": "taxiserv-45c06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659831597132:android:c68ad1503f9695d8fe2ce9",
+        "android_client_info": {
+          "package_name": "com.example.taxiserv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659831597132-1uk4ktd0lvjvhf11pdvj0o0kdj9qd5ep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.taxiserv",
+            "certificate_hash": "b5f14a53a78224f28ce6d36c68612a6d866ff1f3"
+          }
+        },
+        {
+          "client_id": "659831597132-rjp6bcri64kq9n4ohnmi4eaue5sm511r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC2GJIeWWjCuglHFeKDcGNnEeoez07Hss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659831597132-rjp6bcri64kq9n4ohnmi4eaue5sm511r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
