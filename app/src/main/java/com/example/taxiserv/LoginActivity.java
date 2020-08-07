@@ -3,6 +3,7 @@ package com.example.taxiserv;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     TextInputEditText etEmail;
     TextInputEditText etPassword;
+    ProgressDialog progressDialog;
 
     private FirebaseAuthenticationAPI mAuth;
 
@@ -33,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = (TextInputEditText)findViewById(R.id.etPasswordLogin);
 
         mAuth = new FirebaseAuthenticationAPI();
+        progressDialog = new ProgressDialog(LoginActivity.this);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
         if(verifyDatas()) {
+            showProgressDialog();
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
             mAuth.getmAuth().signInWithEmailAndPassword(email, password)
@@ -51,10 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
+                                hideProgressDialog();
                                 Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             } else {
+                                hideProgressDialog();
                                 Toast.makeText(LoginActivity.this, "Email ó contraseña incorrectas.", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -80,4 +86,14 @@ public class LoginActivity extends AppCompatActivity {
         }
         return isValid;
     }
+
+    private void showProgressDialog() {
+        progressDialog.setMessage("Verificando...");
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        progressDialog.hide();
+    }
+
 }

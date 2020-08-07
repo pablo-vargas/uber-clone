@@ -13,7 +13,7 @@
             android:title="Perfil"
             android:icon="@android:drawable/ic_dialog_info"/>
         <item
-            android:id="@+id/action_history"
+            android:id="@+id/action_record"
             android:title="Historial"
             android:icon="@android:drawable/ic_dialog_email"/>
         <item

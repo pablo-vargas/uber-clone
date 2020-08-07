@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.content.Intent;
@@ -14,6 +15,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.taxiserv.fragments.ProfileFragment;
+import com.example.taxiserv.fragments.RecordFragment;
+import com.example.taxiserv.fragments.StartFragment;
+import com.example.taxiserv.fragments.TermsFragment;
 import com.example.taxiserv.models.Client;
 import com.example.taxiserv.utils.FirebaseAuthenticationAPI;
 import com.google.android.material.navigation.NavigationView;
@@ -26,7 +31,9 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
     CircleImageView cvProfile;
     TextView tvUsername;
     TextView tvEmail;
-    
+
+    private Fragment fragment;
+
     FirebaseAuthenticationAPI mAuth;
     Client currentUser;
 
@@ -53,13 +60,21 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
     }
 
     private void setupDatas() {
+        loadPhoto(getCurrentClient().getPhotoUrl());
+        tvUsername.setText(getCurrentClient().getUsername());
+        tvEmail.setText(getCurrentClient().getEmail());
+    }
+
+    public void setUsername(String username) {
+        tvUsername.setText(username);
+    }
+
+    public void loadPhoto(String photoUrl) {
         Picasso.get()
-                .load(getCurrentClient().getPhotoUrl())
+                .load(photoUrl)
                 .placeholder(R.drawable.ic_baseline_person)
                 .error(R.drawable.ic_baseline_person)
                 .into(cvProfile);
-        tvUsername.setText(getCurrentClient().getUsername());
-        tvEmail.setText(getCurrentClient().getEmail());
     }
 
     private void setupToolbar() {
@@ -69,9 +84,7 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
     }
 
     private void setFragmentByDefault() {
-        MenuItem item = navigationView.getMenu().getItem(0);
-        item.setChecked(true);
-        getSupportActionBar().setTitle(item.getTitle());
+        changeFragment(new StartFragment(), navigationView.getMenu().getItem(0));
     }
 
     private void exit() {
@@ -100,26 +113,39 @@ public class WelcomeActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        boolean fragmentTransaction = false;
+        fragment = null;
         switch (item.getItemId()) {
             case R.id.action_start:
-                Toast.makeText(WelcomeActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                fragmentTransaction = true;
+                fragment = new StartFragment();
                 break;
             case R.id.action_profile:
-                Toast.makeText(WelcomeActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                fragmentTransaction = true;
+                fragment = new ProfileFragment();
                 break;
-            case R.id.action_history:
-                Toast.makeText(WelcomeActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+            case R.id.action_record:
+                fragmentTransaction = true;
+                fragment = new RecordFragment();
                 break;
             case R.id.action_termsUse:
-                Toast.makeText(WelcomeActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
+                fragmentTransaction = true;
+                fragment = new TermsFragment();
                 break;
             case R.id.action_sigOut:
                 exit();
                 break;
         }
-        item.setChecked(true);
-        drawerLayout.closeDrawers();
-        getSupportActionBar().setTitle(item.getTitle());
+        if(fragmentTransaction) {
+            changeFragment(fragment,item);
+        }
         return true;
+    }
+
+    private void changeFragment(Fragment fragment, MenuItem menuItem) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.contentFrame,fragment).commit();
+        menuItem.setChecked(true);
+        getSupportActionBar().setTitle(menuItem.getTitle());
+        drawerLayout.closeDrawers();
     }
 }

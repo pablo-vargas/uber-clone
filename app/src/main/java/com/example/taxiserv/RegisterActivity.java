@@ -10,6 +10,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -38,7 +39,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 
-public class RegisterDriverActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     private static final int RC_STORAGE = 21;
     private static final int RP_STORAGE = 121;
 
@@ -56,24 +57,26 @@ public class RegisterDriverActivity extends AppCompatActivity {
     private FirebaseStorageAPI mStorage;
 
     private Uri photoSelected = null;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_driver);
 
-        contentRegister = (CoordinatorLayout)findViewById(R.id.contenRegisterDriver);
+        contentRegister = (CoordinatorLayout)findViewById(R.id.contenRegisterClient);
         btnRegister = (Button)findViewById(R.id.btnRegister);
-        etUsername = (TextInputEditText)findViewById(R.id.etUsernameDriver);
-        etEmail = (TextInputEditText)findViewById(R.id.etCorreoDriver);
+        etUsername = (TextInputEditText)findViewById(R.id.etUsernameClient);
+        etEmail = (TextInputEditText)findViewById(R.id.etCorreoClient);
         etNumber = (TextInputEditText)findViewById(R.id.etNumber);
         etPassword1 = (TextInputEditText)findViewById(R.id.etPassword1);
         etPassword2 = (TextInputEditText)findViewById(R.id.etPassword2);
-        cvPhoto = (CircleImageView)findViewById(R.id.cvRegisterDriver);
+        cvPhoto = (CircleImageView)findViewById(R.id.cvRegisterClient);
 
         mAuth = new FirebaseAuthenticationAPI();
         mDatabase = new FirebaseRealtimeDatabaseAPI();
         mStorage = new FirebaseStorageAPI();
+        progressDialog = new ProgressDialog(RegisterActivity.this);
         
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +145,7 @@ public class RegisterDriverActivity extends AppCompatActivity {
     private void saveDriver() {
         if(verifyDatas()) {
             if (comparePassword()) {
+                showProgressDialog();
                 String correo = etEmail.getText().toString().trim();
                 String password = etPassword2.getText().toString().trim();
                 mAuth.getmAuth().createUserWithEmailAndPassword(correo, password)
@@ -150,8 +154,10 @@ public class RegisterDriverActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
                                     uploadImage();
+                                    hideProgressDialog();
                                 } else {
-                                    Snackbar.make(contentRegister, "Error.", Snackbar.LENGTH_LONG).show();
+                                    hideProgressDialog();
+                                    Snackbar.make(contentRegister, "Ocurrió un error.", Snackbar.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -194,7 +200,7 @@ public class RegisterDriverActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()) {
-                        Intent intent = new Intent(RegisterDriverActivity.this, WelcomeActivity.class);
+                        Intent intent = new Intent(RegisterActivity.this, WelcomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     } else {
@@ -260,5 +266,14 @@ public class RegisterDriverActivity extends AppCompatActivity {
             Snackbar.make(contentRegister, "Las contraseñas no coinciden.", Snackbar.LENGTH_LONG).show();
         }
         return isValid;
+    }
+
+    private void showProgressDialog() {
+        progressDialog.setMessage("Verificando...");
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        progressDialog.hide();
     }
 }

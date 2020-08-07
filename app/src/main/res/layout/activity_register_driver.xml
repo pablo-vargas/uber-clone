@@ -2,10 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contenRegisterDriver"
+    android:id="@+id/contenRegisterClient"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterDriverActivity"
+    tools:context=".RegisterActivity"
     android:fitsSystemWindows="true"
     android:focusableInTouchMode="true">
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/cvRegisterDriver"
+                android:id="@+id/cvRegisterClient"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etUsernameDriver"
+                    android:id="@+id/etUsernameClient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nombre Completo:"
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCorreoDriver"
+                    android:id="@+id/etCorreoClient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Correo electrónico:"

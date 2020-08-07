@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showActivityRegister() {
-        Intent intent = new Intent(MainActivity.this, RegisterDriverActivity.class);
+        Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
         startActivity(intent);
     }
 

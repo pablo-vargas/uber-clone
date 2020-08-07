@@ -3,6 +3,11 @@ package com.example.taxiserv.models;
 import com.google.firebase.database.Exclude;
 
 public class Client {
+    public static final String UID = "uid";
+    public static final String USERNAME = "username";
+    public static final String EMAIL = "email";
+    public static final String NUMBER = "number";
+    public static final String PHOTO_URL = "photoUrl";
 
     @Exclude
     private String uid;
